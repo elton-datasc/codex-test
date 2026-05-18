@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useMemo, useState } from 'react';
 import {
   ArrowDownToLine,
   Github,
@@ -6,42 +9,131 @@ import {
   Languages,
   Linkedin,
   Mail,
-  MapPin
+  MapPin,
+  Phone
 } from 'lucide-react';
 import { AnimatedContainer } from '@/components/AnimatedContainer';
 import { Section } from '@/components/Section';
 import { Tag } from '@/components/Tag';
-import {
-  about,
-  certifications,
-  education,
-  experiences,
-  languages,
-  profile,
-  projects,
-  skills
-} from '@/data/resumeData';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { localizedContent, type Locale } from '@/data/resumeData';
 
-const navLinks = [
-  { href: '#about', label: 'About' },
-  { href: '#skills', label: 'Skills' },
-  { href: '#experience', label: 'Experience' },
-  { href: '#projects', label: 'Projects' },
-  { href: '#certifications', label: 'Certifications' },
-  { href: '#education', label: 'Education' },
-  { href: '#languages', label: 'Languages' },
-  { href: '#contact', label: 'Contact' }
-];
+const uiText = {
+  en: {
+    nav: ['About', 'Skills', 'Experience', 'Projects', 'Certifications', 'Education', 'Languages', 'Contact'],
+    heroBadge: 'Data Engineer Portfolio',
+    downloadCvEn: 'Download CV (EN)',
+    downloadCvPt: 'Download CV (PT)',
+    contact: 'Contact',
+    sections: {
+      about: 'About Me',
+      skills: 'Technical Skills',
+      experience: 'Professional Experience',
+      projects: 'Projects',
+      certifications: 'Certifications',
+      education: 'Education',
+      languages: 'Languages',
+      contact: 'Contact'
+    },
+    academicBackground: 'Academic Background',
+    contactLine:
+      'Interested in working together on data platforms, analytics, or AI initiatives? Feel free to reach out.',
+    openToGlobal: 'Open to international opportunities'
+  },
+  pt: {
+    nav: ['Sobre', 'Habilidades', 'Experiência', 'Projetos', 'Certificações', 'Educação', 'Idiomas', 'Contato'],
+    heroBadge: 'Portfólio de Engenharia de Dados',
+    downloadCvEn: 'Baixar CV (EN)',
+    downloadCvPt: 'Baixar CV (PT)',
+    contact: 'Contato',
+    sections: {
+      about: 'Sobre Mim',
+      skills: 'Habilidades Técnicas',
+      experience: 'Experiência Profissional',
+      projects: 'Projetos',
+      certifications: 'Certificações',
+      education: 'Educação',
+      languages: 'Idiomas',
+      contact: 'Contato'
+    },
+    academicBackground: 'Formação Acadêmica',
+    contactLine:
+      'Tem interesse em colaborar em projetos de dados, analytics ou IA? Vamos conversar.',
+    openToGlobal: 'Disponível para oportunidades internacionais'
+  }
+} as const;
 
 export default function HomePage() {
+  const [locale, setLocale] = useState<Locale>('pt');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('locale');
+    if (saved === 'pt' || saved === 'en') {
+      setLocale(saved);
+    }
+  }, []);
+
+  const toggleLocale = () => {
+    setLocale((current) => {
+      const next = current === 'pt' ? 'en' : 'pt';
+      localStorage.setItem('locale', next);
+      return next;
+    });
+  };
+
+  const content = localizedContent[locale];
+  const t = uiText[locale];
+  const cvPtPath = '/Curriculo_Elton_Guilherme_PT.pdf';
+  const cvEnPath = '/Elton_Guilherme_Resume.pdf';
+
+  const navLinks = useMemo(
+    () => [
+      { href: '#about', label: t.nav[0] },
+      { href: '#skills', label: t.nav[1] },
+      { href: '#experience', label: t.nav[2] },
+      { href: '#projects', label: t.nav[3] },
+      { href: '#certifications', label: t.nav[4] },
+      { href: '#education', label: t.nav[5] },
+      { href: '#languages', label: t.nav[6] },
+      { href: '#contact', label: t.nav[7] }
+    ],
+    [t.nav]
+  );
+
   return (
-    <main className="min-h-screen">
-      <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/90 backdrop-blur-md">
-        <div className="container-base flex items-center justify-between py-4">
-          <span className="text-sm font-semibold text-slate-900">{profile.name}</span>
-          <nav className="hidden gap-5 text-sm text-slate-600 md:flex">
+    <main className="min-h-screen bg-slate-50 dark:bg-slate-950">
+      <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/90 backdrop-blur-md dark:border-slate-800 dark:bg-slate-950/90">
+        <div className="container-base flex items-center justify-between gap-4 py-4">
+          <span className="line-clamp-1 text-xs font-semibold text-slate-900 dark:text-slate-100 md:text-sm">
+            {content.profile.name}
+          </span>
+          <div className="flex items-center gap-2">
+            <nav className="hidden gap-5 text-sm text-slate-600 lg:flex dark:text-slate-300">
+              {navLinks.map((link) => (
+                <a key={link.href} href={link.href} className="transition hover:text-brand-700">
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+            <button
+              type="button"
+              onClick={toggleLocale}
+              className="inline-flex h-10 min-w-14 items-center justify-center rounded-xl border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-700 transition hover:border-brand-300 hover:text-brand-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-brand-500 dark:hover:text-brand-300"
+              aria-label="Toggle language"
+            >
+              {locale === 'pt' ? 'EN' : 'PT'}
+            </button>
+            <ThemeToggle />
+          </div>
+        </div>
+        <div className="container-base pb-3 lg:hidden">
+          <nav className="flex gap-3 overflow-x-auto whitespace-nowrap text-xs text-slate-600 dark:text-slate-300">
             {navLinks.map((link) => (
-              <a key={link.href} href={link.href} className="transition hover:text-brand-700">
+              <a
+                key={link.href}
+                href={link.href}
+                className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 transition hover:border-brand-300 hover:text-brand-700 dark:border-slate-700 dark:bg-slate-900"
+              >
                 {link.label}
               </a>
             ))}
@@ -49,49 +141,56 @@ export default function HomePage() {
         </div>
       </header>
 
-      <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-brand-50 to-slate-50 py-20 md:py-28">
-        <div className="absolute inset-x-0 top-0 h-48 bg-[radial-gradient(circle_at_center,_rgba(47,150,255,0.16),_transparent_65%)]" />
+      <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-brand-50 to-slate-50 py-16 md:py-24 dark:border-slate-800 dark:from-slate-900 dark:to-slate-950">
+        <div className="absolute inset-x-0 top-0 h-48 bg-[radial-gradient(circle_at_center,_rgba(47,150,255,0.16),_transparent_65%)] dark:bg-[radial-gradient(circle_at_center,_rgba(47,150,255,0.24),_transparent_65%)]" />
         <div className="container-base relative">
           <AnimatedContainer>
-            <p className="mb-3 inline-flex rounded-full bg-white px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-700 shadow-sm">
-              Data Engineer Portfolio
+            <p className="mb-3 inline-flex rounded-full bg-white px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-700 shadow-sm dark:bg-slate-900 dark:text-brand-300">
+              {t.heroBadge}
             </p>
-            <h1 className="max-w-4xl text-4xl font-bold leading-tight text-slate-900 md:text-5xl">
-              {profile.name}
+            <h1 className="max-w-4xl text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 md:text-5xl">
+              {content.profile.name}
             </h1>
-            <p className="mt-4 text-lg font-medium text-brand-800">{profile.title}</p>
-            <p className="mt-5 max-w-3xl text-base leading-relaxed text-slate-700 md:text-lg">
-              {profile.summary}
+            <p className="mt-4 text-base font-medium text-brand-800 dark:text-brand-300 md:text-lg">{content.profile.title}</p>
+            <p className="mt-5 max-w-3xl text-sm leading-relaxed text-slate-700 dark:text-slate-300 md:text-lg">
+              {content.profile.summary}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
-                href={profile.cvPath}
+                href={cvPtPath}
                 className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700"
               >
                 <ArrowDownToLine size={18} />
-                Download CV
+                {t.downloadCvPt}
+              </a>
+              <a
+                href={cvEnPath}
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 transition hover:border-brand-300 hover:text-brand-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+              >
+                <ArrowDownToLine size={18} />
+                {t.downloadCvEn}
               </a>
               <a
                 href="#contact"
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 transition hover:border-brand-300 hover:text-brand-700"
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 transition hover:border-brand-300 hover:text-brand-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
               >
                 <Mail size={18} />
-                Contact
+                {t.contact}
               </a>
               <a
-                href={profile.linkedin}
+                href={content.profile.linkedin}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 transition hover:border-brand-300 hover:text-brand-700"
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 transition hover:border-brand-300 hover:text-brand-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
               >
                 <Linkedin size={18} />
                 LinkedIn
               </a>
               <a
-                href={profile.github}
+                href={content.profile.github}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 transition hover:border-brand-300 hover:text-brand-700"
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 transition hover:border-brand-300 hover:text-brand-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
               >
                 <Github size={18} />
                 GitHub
@@ -101,23 +200,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      <Section id="about" title="About Me">
-        <AnimatedContainer className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
-          <p className="text-slate-700 leading-relaxed">{about}</p>
+      <Section id="about" title={t.sections.about}>
+        <AnimatedContainer className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft dark:border-slate-800 dark:bg-slate-900">
+          <p className="leading-relaxed text-slate-700 dark:text-slate-300">{content.about}</p>
         </AnimatedContainer>
       </Section>
 
-      <Section id="skills" title="Technical Skills">
+      <Section id="skills" title={t.sections.skills}>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {skills.map((category, index) => (
+          {content.skills.map((category, index) => (
             <AnimatedContainer
               key={category.title}
               delay={index * 0.04}
-              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft"
+              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-slate-900"
             >
               <div className="mb-4 flex items-center gap-3">
                 <category.icon className="text-brand-600" size={20} />
-                <h3 className="text-base font-semibold text-slate-900">{category.title}</h3>
+                <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">{category.title}</h3>
               </div>
               <div className="flex flex-wrap gap-2">
                 {category.items.map((item) => (
@@ -129,25 +228,25 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section id="experience" title="Professional Experience">
+      <Section id="experience" title={t.sections.experience}>
         <div className="space-y-4">
-          {experiences.map((exp, index) => (
+          {content.experiences.map((exp, index) => (
             <AnimatedContainer
               key={`${exp.company}-${exp.role}`}
               delay={index * 0.05}
-              className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft"
+              className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft dark:border-slate-800 dark:bg-slate-900"
             >
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <h3 className="text-lg font-semibold text-slate-900">{exp.role}</h3>
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{exp.role}</h3>
                   <p className="text-sm text-brand-700">{exp.company}</p>
                 </div>
-                <div className="text-sm text-slate-600">
+                <div className="text-sm text-slate-600 dark:text-slate-400">
                   <p>{exp.period}</p>
                   <p>{exp.location}</p>
                 </div>
               </div>
-              <ul className="mt-4 space-y-2 text-sm text-slate-700">
+              <ul className="mt-4 space-y-2 text-sm text-slate-700 dark:text-slate-300">
                 {exp.achievements.map((point) => (
                   <li key={point} className="flex items-start gap-2">
                     <span className="mt-1 h-1.5 w-1.5 rounded-full bg-brand-500" />
@@ -160,16 +259,16 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section id="projects" title="Projects">
+      <Section id="projects" title={t.sections.projects}>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {projects.map((project, index) => (
+          {content.projects.map((project, index) => (
             <AnimatedContainer
               key={project.name}
               delay={index * 0.05}
-              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft"
+              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-slate-900"
             >
-              <h3 className="text-base font-semibold text-slate-900">{project.name}</h3>
-              <p className="mt-2 text-sm text-slate-700">{project.description}</p>
+              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">{project.name}</h3>
+              <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">{project.description}</p>
               <p className="mt-3 text-sm font-medium text-brand-700">{project.impact}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {project.stack.map((tech) => (
@@ -181,98 +280,100 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section id="certifications" title="Certifications">
+      <Section id="certifications" title={t.sections.certifications}>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {certifications.map((cert, index) => (
+          {content.certifications.map((cert, index) => (
             <AnimatedContainer
               key={cert.name}
               delay={index * 0.05}
-              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft"
+              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-slate-900"
             >
-              <h3 className="text-base font-semibold text-slate-900">{cert.name}</h3>
-              <p className="mt-1 text-sm text-slate-600">{cert.issuer}</p>
+              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">{cert.name}</h3>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{cert.issuer}</p>
               <p className="mt-2 text-sm text-brand-700">{cert.year}</p>
             </AnimatedContainer>
           ))}
         </div>
       </Section>
 
-      <Section id="education" title="Education">
+      <Section id="education" title={t.sections.education}>
         <div className="grid gap-4 md:grid-cols-2">
-          {education.map((item, index) => (
+          {content.education.map((item, index) => (
             <AnimatedContainer
               key={item.degree}
               delay={index * 0.05}
-              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft"
+              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-slate-900"
             >
               <div className="mb-2 flex items-center gap-2 text-brand-700">
                 <GraduationCap size={18} />
-                <span className="text-sm font-semibold">Academic Background</span>
+                <span className="text-sm font-semibold">{t.academicBackground}</span>
               </div>
-              <h3 className="text-base font-semibold text-slate-900">{item.degree}</h3>
-              <p className="mt-1 text-sm text-slate-700">{item.institution}</p>
-              <p className="mt-2 text-sm text-slate-600">{item.period}</p>
+              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">{item.degree}</h3>
+              <p className="mt-1 text-sm text-slate-700 dark:text-slate-300">{item.institution}</p>
+              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">{item.period}</p>
             </AnimatedContainer>
           ))}
         </div>
       </Section>
 
-      <Section id="languages" title="Languages">
+      <Section id="languages" title={t.sections.languages}>
         <div className="grid gap-4 md:grid-cols-3">
-          {languages.map((language, index) => (
+          {content.languages.map((language, index) => (
             <AnimatedContainer
               key={language.name}
               delay={index * 0.05}
-              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft"
+              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-slate-900"
             >
               <div className="mb-2 flex items-center gap-2 text-brand-700">
                 <Languages size={18} />
                 <span className="text-sm font-semibold">{language.name}</span>
               </div>
-              <p className="text-sm text-slate-700">{language.level}</p>
+              <p className="text-sm text-slate-700 dark:text-slate-300">{language.level}</p>
             </AnimatedContainer>
           ))}
         </div>
       </Section>
 
-      <Section id="contact" title="Contact">
-        <AnimatedContainer className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
-          <p className="text-slate-700">
-            Interested in working together on data platforms, analytics, or AI initiatives? Feel free to reach out.
-          </p>
+      <Section id="contact" title={t.sections.contact}>
+        <AnimatedContainer className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft dark:border-slate-800 dark:bg-slate-900">
+          <p className="text-slate-700 dark:text-slate-300">{t.contactLine}</p>
           <div className="mt-4 flex flex-wrap items-center gap-4 text-sm">
             <a
-              href={`mailto:${profile.email}`}
-              className="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-3 py-2 text-slate-800 transition hover:border-brand-300 hover:text-brand-700"
+              href={`mailto:${content.profile.email}`}
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-3 py-2 text-slate-800 transition hover:border-brand-300 hover:text-brand-700 dark:border-slate-700 dark:text-slate-200"
             >
               <Mail size={16} />
-              {profile.email}
+              {content.profile.email}
             </a>
-            <span className="inline-flex items-center gap-2 text-slate-600">
+            <span className="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400">
+              <Phone size={16} />
+              {content.profile.phone}
+            </span>
+            <span className="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400">
               <MapPin size={16} />
-              {profile.location}
+              {content.profile.location}
             </span>
             <a
-              href={profile.linkedin}
+              href={content.profile.linkedin}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 text-brand-700 hover:text-brand-800"
+              className="inline-flex items-center gap-2 text-brand-700 hover:text-brand-800 dark:text-brand-300 dark:hover:text-brand-200"
             >
               <Linkedin size={16} />
               LinkedIn
             </a>
             <a
-              href={profile.github}
+              href={content.profile.github}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 text-brand-700 hover:text-brand-800"
+              className="inline-flex items-center gap-2 text-brand-700 hover:text-brand-800 dark:text-brand-300 dark:hover:text-brand-200"
             >
               <Github size={16} />
               GitHub
             </a>
-            <span className="inline-flex items-center gap-2 text-slate-600">
+            <span className="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400">
               <Globe size={16} />
-              Open to international opportunities
+              {t.openToGlobal}
             </span>
           </div>
         </AnimatedContainer>
