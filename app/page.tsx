@@ -110,7 +110,7 @@ export default function HomePage() {
           <div className="flex items-center gap-2">
             <nav className="hidden gap-5 text-sm text-slate-600 lg:flex dark:text-slate-300">
               {navLinks.map((link) => (
-                <a key={link.href} href={link.href} className="transition hover:text-brand-700">
+                <a key={link.href} href={link.href} className="fiap-tech-line transition hover:text-brand-700">
                   {link.label}
                 </a>
               ))}
@@ -141,11 +141,11 @@ export default function HomePage() {
         </div>
       </header>
 
-      <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-brand-50 to-slate-50 py-16 md:py-24 dark:border-slate-800 dark:from-slate-900 dark:to-slate-950">
-        <div className="absolute inset-x-0 top-0 h-48 bg-[radial-gradient(circle_at_center,_rgba(47,150,255,0.16),_transparent_65%)] dark:bg-[radial-gradient(circle_at_center,_rgba(47,150,255,0.24),_transparent_65%)]" />
+      <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-brand-50 to-slate-50 py-16 md:py-24 dark:border-slate-800 dark:from-slate-950 dark:to-black">
+        <div className="absolute inset-x-0 top-0 h-64 bg-[radial-gradient(circle_at_center,_rgba(47,150,255,0.16),_transparent_65%)] dark:bg-[radial-gradient(circle_at_center,_rgba(57,215,255,0.2),_transparent_65%)]" />
         <div className="container-base relative">
           <AnimatedContainer>
-            <p className="mb-3 inline-flex rounded-full bg-white px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-700 shadow-sm dark:bg-slate-900 dark:text-brand-300">
+            <p className="fiap-hero-glow mb-3 inline-flex rounded-none bg-white px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-700 shadow-sm dark:bg-slate-900 dark:text-brand-300">
               {t.heroBadge}
             </p>
             <h1 className="max-w-4xl text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 md:text-5xl">
@@ -158,7 +158,7 @@ export default function HomePage() {
             <div className="mt-8 flex flex-wrap gap-3">
               <a
                 href={cvPtPath}
-                className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700"
+                className="inline-flex items-center gap-2 rounded-none border border-brand-600 bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-transparent hover:text-brand-500"
               >
                 <ArrowDownToLine size={18} />
                 {t.downloadCvPt}
@@ -201,7 +201,7 @@ export default function HomePage() {
       </section>
 
       <Section id="about" title={t.sections.about}>
-        <AnimatedContainer className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft dark:border-slate-800 dark:bg-slate-900">
+        <AnimatedContainer className="fiap-panel rounded-lg p-6 shadow-soft">
           <p className="leading-relaxed text-slate-700 dark:text-slate-300">{content.about}</p>
         </AnimatedContainer>
       </Section>
@@ -212,7 +212,7 @@ export default function HomePage() {
             <AnimatedContainer
               key={category.title}
               delay={index * 0.04}
-              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-slate-900"
+              className="fiap-panel rounded-lg p-5 shadow-soft"
             >
               <div className="mb-4 flex items-center gap-3">
                 <category.icon className="text-brand-600" size={20} />
@@ -234,7 +234,7 @@ export default function HomePage() {
             <AnimatedContainer
               key={`${exp.company}-${exp.role}`}
               delay={index * 0.05}
-              className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft dark:border-slate-800 dark:bg-slate-900"
+              className="fiap-panel rounded-lg p-6 shadow-soft"
             >
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
@@ -265,7 +265,7 @@ export default function HomePage() {
             <AnimatedContainer
               key={project.name}
               delay={index * 0.05}
-              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-slate-900"
+              className="fiap-panel rounded-lg p-5 shadow-soft"
             >
               <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">{project.name}</h3>
               <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">{project.description}</p>
@@ -286,7 +286,7 @@ export default function HomePage() {
             <AnimatedContainer
               key={cert.name}
               delay={index * 0.05}
-              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-slate-900"
+              className="fiap-panel rounded-lg p-5 shadow-soft"
             >
               <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">{cert.name}</h3>
               <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{cert.issuer}</p>
@@ -302,7 +302,7 @@ export default function HomePage() {
             <AnimatedContainer
               key={item.degree}
               delay={index * 0.05}
-              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-slate-900"
+              className="fiap-panel rounded-lg p-5 shadow-soft"
             >
               <div className="mb-2 flex items-center gap-2 text-brand-700">
                 <GraduationCap size={18} />
@@ -322,7 +322,7 @@ export default function HomePage() {
             <AnimatedContainer
               key={language.name}
               delay={index * 0.05}
-              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-slate-900"
+              className="fiap-panel rounded-lg p-5 shadow-soft"
             >
               <div className="mb-2 flex items-center gap-2 text-brand-700">
                 <Languages size={18} />
@@ -335,7 +335,7 @@ export default function HomePage() {
       </Section>
 
       <Section id="contact" title={t.sections.contact}>
-        <AnimatedContainer className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft dark:border-slate-800 dark:bg-slate-900">
+        <AnimatedContainer className="fiap-panel rounded-lg p-6 shadow-soft">
           <p className="text-slate-700 dark:text-slate-300">{t.contactLine}</p>
           <div className="mt-4 flex flex-wrap items-center gap-4 text-sm">
             <a

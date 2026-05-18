@@ -4,6 +4,18 @@
 
 :root {
   color-scheme: light;
+  --accent-pink: #ed145b;
+  --accent-pink-strong: #e60057;
+  --accent-cyan: #39d7ff;
+  --surface-dark: #0f0f0f;
+  --surface-panel: #151515;
+  --accent-detail: #2f96ff;
+  --accent-detail-rgb: 47, 150, 255;
+}
+
+.dark {
+  --accent-detail: #ed145b;
+  --accent-detail-rgb: 237, 20, 91;
 }
 
 *,
@@ -22,6 +34,13 @@ body {
   min-height: 100dvh;
   overflow-x: hidden;
   @apply bg-slate-50 text-slate-800 antialiased;
+}
+
+.dark body {
+  background:
+    radial-gradient(60rem 40rem at 10% -10%, rgba(57, 215, 255, 0.16), transparent 60%),
+    radial-gradient(50rem 30rem at 90% 10%, rgba(237, 20, 91, 0.16), transparent 60%),
+    linear-gradient(180deg, #0b0d12 0%, #08090d 45%, #05060a 100%);
 }
 
 img,
@@ -44,4 +63,35 @@ button {
 
 .container-base {
   @apply mx-auto w-full max-w-6xl px-6 md:px-10;
+}
+
+.fiap-tech-line {
+  position: relative;
+}
+
+.fiap-tech-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -0.35rem;
+  width: 2.4rem;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-detail), transparent);
+}
+
+.fiap-panel {
+  @apply border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/90;
+  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.fiap-panel:hover {
+  transform: translateY(-3px);
+  border-color: rgba(var(--accent-detail-rgb), 0.6);
+  box-shadow: 0 18px 44px -24px rgba(var(--accent-detail-rgb), 0.45);
+}
+
+.fiap-hero-glow {
+  box-shadow:
+    0 0 0 1px rgba(57, 215, 255, 0.18),
+    0 0 60px -28px rgba(57, 215, 255, 0.65);
 }

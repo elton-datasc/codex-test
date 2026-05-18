@@ -15,10 +15,14 @@ export function AnimatedContainer({ children, delay = 0, className }: AnimatedCo
   return (
     <motion.div
       className={className}
-      initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+      initial={reduceMotion ? false : { opacity: 0, y: 28, scale: 0.98, filter: 'blur(4px)' }}
+      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
       viewport={{ once: true, amount: 0.25 }}
-      transition={reduceMotion ? { duration: 0 } : { duration: 0.5, delay }}
+      transition={
+        reduceMotion
+          ? { duration: 0 }
+          : { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }
+      }
     >
       {children}
     </motion.div>
