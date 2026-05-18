@@ -165,7 +165,7 @@ export default function HomePage() {
               </a>
               <a
                 href={cvEnPath}
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 transition hover:border-brand-300 hover:text-brand-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+                className="inline-flex items-center gap-2 rounded-none border border-brand-600 bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-transparent hover:text-brand-500"
               >
                 <ArrowDownToLine size={18} />
                 {t.downloadCvEn}
