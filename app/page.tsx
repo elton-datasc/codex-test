@@ -21,7 +21,6 @@ import { localizedContent, type Locale } from '@/data/resumeData';
 const uiText = {
   en: {
     nav: ['About', 'Skills', 'Experience', 'Projects', 'Certifications', 'Education', 'Languages', 'Contact'],
-    heroBadge: 'Data Engineer Portfolio',
     downloadCvEn: 'Download CV (EN)',
     downloadCvPt: 'Download CV (PT)',
     contact: 'Contact',
@@ -42,7 +41,6 @@ const uiText = {
   },
   pt: {
     nav: ['Sobre', 'Habilidades', 'Experiência', 'Projetos', 'Certificações', 'Educação', 'Idiomas', 'Contato'],
-    heroBadge: 'Portfólio de Engenharia de Dados',
     downloadCvEn: 'Baixar CV (EN)',
     downloadCvPt: 'Baixar CV (PT)',
     contact: 'Contato',
@@ -186,9 +184,6 @@ export default function HomePage() {
         <div className="absolute inset-x-0 top-0 h-64 bg-[radial-gradient(circle_at_center,_rgba(47,150,255,0.16),_transparent_65%)] dark:bg-[radial-gradient(circle_at_center,_rgba(57,215,255,0.2),_transparent_65%)]" />
         <div className="container-base relative">
           <div className="relative z-10">
-            <p className="fiap-hero-glow mb-3 inline-flex rounded-none bg-white px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-700 shadow-sm dark:bg-slate-900 dark:text-brand-300">
-              {t.heroBadge}
-            </p>
             <h1 className="hero-neon-name max-w-5xl">
               Elton Guilherme de Almeida Silva
             </h1>
