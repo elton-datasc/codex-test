@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowDownToLine,
   Github,
@@ -65,12 +65,49 @@ const uiText = {
 
 export default function HomePage() {
   const [locale, setLocale] = useState<Locale>('pt');
+  const mediaBackgroundRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem('locale');
     if (saved === 'pt' || saved === 'en') {
       setLocale(saved);
     }
+  }, []);
+
+  useEffect(() => {
+    const handleLoad = () => {
+      if (!mediaBackgroundRef.current) return;
+      if (mediaBackgroundRef.current.querySelector('video')) return;
+
+      const video = document.createElement('video');
+      video.src = '/site-video.mp4';
+      video.autoplay = true;
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = 'metadata';
+      video.className = 'media-video';
+      video.style.opacity = '0';
+
+      video.addEventListener('canplaythrough', () => {
+        video.style.opacity = '1';
+      });
+
+      mediaBackgroundRef.current.appendChild(video);
+      void video.play().catch(() => {
+        // No-op: muted autoplay can be blocked in edge cases.
+      });
+    };
+
+    if (document.readyState === 'complete') {
+      handleLoad();
+    } else {
+      window.addEventListener('load', handleLoad);
+    }
+
+    return () => {
+      window.removeEventListener('load', handleLoad);
+    };
   }, []);
 
   const toggleLocale = () => {
@@ -141,18 +178,22 @@ export default function HomePage() {
         </div>
       </header>
 
-      <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-brand-50 to-slate-50 py-16 md:py-24 dark:border-slate-800 dark:from-slate-950 dark:to-black">
+      <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-brand-50 to-slate-50 py-24 md:py-28 dark:border-slate-800 dark:from-slate-950 dark:to-black">
+        <div ref={mediaBackgroundRef} className="media-background" aria-hidden="true">
+          <img src="/site-image.webp" alt="" className="media-placeholder" />
+        </div>
+        <div className="absolute inset-0 bg-slate-900/45 dark:bg-slate-950/60" />
         <div className="absolute inset-x-0 top-0 h-64 bg-[radial-gradient(circle_at_center,_rgba(47,150,255,0.16),_transparent_65%)] dark:bg-[radial-gradient(circle_at_center,_rgba(57,215,255,0.2),_transparent_65%)]" />
         <div className="container-base relative">
-          <AnimatedContainer>
+          <div className="relative z-10">
             <p className="fiap-hero-glow mb-3 inline-flex rounded-none bg-white px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-700 shadow-sm dark:bg-slate-900 dark:text-brand-300">
               {t.heroBadge}
             </p>
-            <h1 className="max-w-4xl text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 md:text-5xl">
-              {content.profile.name}
+            <h1 className="hero-neon-name max-w-5xl">
+              Elton Guilherme de Almeida Silva
             </h1>
-            <p className="mt-4 text-base font-medium text-brand-800 dark:text-brand-300 md:text-lg">{content.profile.title}</p>
-            <p className="mt-5 max-w-3xl text-sm leading-relaxed text-slate-700 dark:text-slate-300 md:text-lg">
+            <p className="hero-neon-role mt-3">Data Engineer | Analytics | Gen AI</p>
+            <p className="mt-6 max-w-3xl text-sm leading-relaxed text-slate-100 md:text-lg">
               {content.profile.summary}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -196,7 +237,7 @@ export default function HomePage() {
                 GitHub
               </a>
             </div>
-          </AnimatedContainer>
+          </div>
         </div>
       </section>
 
